@@ -20,7 +20,6 @@ async function run(): Promise<void> {
       core.info(`Cache hit on the key ${key}`)
       core.info(`,not saving cache`)
     }
-
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
