@@ -46,8 +46,6 @@ async function run(): Promise<void> {
       `find ${cacheBase} -maxdepth 1 -name ${key} -type d`
     )
     const cacheHit = find.stdout ? true : false
-    core.saveState('cache-hit', String(cacheHit))
-    core.setOutput('cache-hit', String(cacheHit))
 
     if (cacheHit === true) {
       const ln = await exec(
