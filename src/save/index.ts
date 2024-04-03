@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import { exec, getCachePath } from '../utils/cache'
+import { exec, getCachePath,checkKey,checkPaths } from '../utils/cache'
 
 async function run(): Promise<void> {
   try {
@@ -9,8 +9,14 @@ async function run(): Promise<void> {
     const path = core.getInput('path')
     const cachePath = getCachePath(key, base)
 
+
+    checkKey(key)
+    checkPaths([path, cachePath])
+    core.debug(cachePath)
+
+    await exec(`rm -rf ${cachePath}`)
     await exec(`mkdir -p ${cachePath}`)
-    const cp = await exec(`cp ./${path} ${cachePath}`)
+    const cp = await exec(`cp -rf ${path} ${cachePath}`)
 
     core.debug(cp.stdout)
     if (cp.stderr) core.error(cp.stderr)
