@@ -1,15 +1,14 @@
 {
   "name": "local-cache",
-  "version": "1.0.0",
+  "version": "3.0.1",
   "private": true,
   "description": "cache dependencies and build outputs to improve workflow execution time on self hosted machine",
-  "main": "lib/restore/index.js",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write '**/*.ts'",
     "format-check": "prettier --check '**/*.ts'",
     "lint": "eslint src/**/*.ts",
-    "package": "ncc build --source-map --license licenses.txt",
+    "package": "ncc build lib/restore/index.js --source-map --license licenses.txt --out dist/restore/ && ncc build lib/save/index.js --source-map --license licenses.txt --out dist/save/",
     "all": "npm run build && npm run format && npm run lint && npm run package"
   },
   "repository": {
