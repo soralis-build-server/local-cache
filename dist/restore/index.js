@@ -63,10 +63,6 @@ function run() {
             const cachePath = (0, cache_1.getCachePath)(key, base);
             (0, cache_1.checkKey)(key);
             (0, cache_1.checkPaths)([path]);
-            core.saveState('key', key);
-            core.saveState('path', path);
-            core.saveState('cache-base', cacheBase);
-            core.saveState('cache-path', cachePath);
             yield (0, cache_1.exec)(`mkdir -p ${cacheBase}`);
             const find = yield (0, cache_1.exec)(`find ${cacheBase} -maxdepth 1 -name ${key} -type d`);
             const cacheHit = find.stdout ? true : false;
