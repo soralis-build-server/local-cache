@@ -36,11 +36,6 @@ async function run(): Promise<void> {
     checkKey(key)
     checkPaths([path])
 
-    core.saveState('key', key)
-    core.saveState('path', path)
-    core.saveState('cache-base', cacheBase)
-    core.saveState('cache-path', cachePath)
-
     await exec(`mkdir -p ${cacheBase}`)
     const find = await exec(
       `find ${cacheBase} -maxdepth 1 -name ${key} -type d`

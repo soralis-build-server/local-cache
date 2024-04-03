@@ -40,23 +40,21 @@ const cache_1 = __nccwpck_require__(891);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const cacheHit = core.getState('cache-hit');
-            const key = core.getState('key');
-            if (cacheHit === 'false') {
-                const cachePath = core.getState('cache-path');
-                const path = core.getState('path');
-                yield (0, cache_1.exec)(`mkdir -p ${cachePath}`);
-                const cp = yield (0, cache_1.exec)(`cp ./${path} ${cachePath}`);
-                core.debug(cp.stdout);
-                if (cp.stderr)
-                    core.error(cp.stderr);
-                if (!cp.stderr)
-                    core.info(`Cache saved with key ${key}`);
-            }
-            else {
-                core.info(`Cache hit on the key ${key}`);
-                core.info(`,not saving cache`);
-            }
+            const key = core.getInput('key');
+            const base = core.getInput('base');
+            const path = core.getInput('path');
+            const cachePath = (0, cache_1.getCachePath)(key, base);
+            (0, cache_1.checkKey)(key);
+            (0, cache_1.checkPaths)([path, cachePath]);
+            core.debug(cachePath);
+            yield (0, cache_1.exec)(`rm -rf ${cachePath}`);
+            yield (0, cache_1.exec)(`mkdir -p ${cachePath}`);
+            const cp = yield (0, cache_1.exec)(`cp -rf ${path} ${cachePath}`);
+            core.debug(cp.stdout);
+            if (cp.stderr)
+                core.error(cp.stderr);
+            if (!cp.stderr)
+                core.info(`Cache saved with key ${key}`);
         }
         catch (error) {
             if (error instanceof Error)
